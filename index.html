@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Applications Tracker</title>
+    <style>
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; border: 1px solid #ccc; }
+        .small-btn { cursor: pointer;}
+        body { font-family: Arial, sans-serif; display: flex; }
+
+        .submit{
+            width: 50%;
+            background-color: #005000;
+        }
+
+        #form-container {
+            display: flex; /* Enables flexbox */
+            align-items: center; /* Aligns items vertically */
+            gap: 15px; /* Adds spacing between elements */
+        }
+        #fetch-form,
+        #radio-form {
+            display: flex; /* Ensures internal elements are aligned */
+            align-items: center; /* Centers them */
+            gap: 10px; /* Spacing between elements */
+        }
+
+        nav { 
+            background: #333;
+            min-width: 150px;
+            max-width: 150px; 
+            width: 150px; 
+            padding: 10px; 
+            /*height: 100vh; */
+            height:240px;
+            color: white; 
+            display: flex; 
+            flex-direction: column;
+        }
+        nav a { 
+            color: white; 
+            margin: 5px 0; /* Adjust margin for better spacing */
+            padding: 8px 12px; /* Add padding to create button-like feel */
+            background: #444; /* Slightly lighter background */
+            border: 2px solid #555; /* Border to separate buttons */
+            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; 
+            cursor: pointer; 
+            display: block; 
+            text-align: center; /* Center text inside buttons */
+}
+         a:hover { 
+            background: #666; /* Lighter shade for hover effect */
+            border-color: #888; /* Adjust border color */
+            color: #fff; /* Ensure text remains visible */
+}
+        .content { flex-grow: 1; padding:20px;}
+        .page { display: none; }
+        .active { display: block; }
+
+        .dashboard-container {
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .dashboard-box {
+            width: 100px;
+            height: 100px;
+            background-color: #0f70df;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+
+            
+        }
+        #search-form {
+            display: flex; /* Enables flexbox for layout */
+            justify-content: center; /* Centers the input field */
+            align-items: center; /* Aligns the items vertically */
+            width: 100%; /* Makes it responsive */
+            padding:10px;
+        
+        }
+        .search-container {
+            display: flex;
+            
+            align-items: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 3px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-icon {
+            user-select: none;
+            font-size: 18px; /* Adjust icon size */
+            margin-right: 10px; /* Space between icon and input */
+        }
+
+        #applications-search-bar {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+        }
+        #job-form{
+            background: #dddddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 450px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        button {    
+            margin-top: 15px;
+            padding: 10px;
+            
+            color: white;
+            background-color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #import-data-label{
+            margin-top: 15px;
+            padding: 10px;
+            
+            color: white;
+            background-color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 150px;
+        }
+        
+        #edit-job-id {
+            background: #dddddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 450px;
+            }
+        .job-details-input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .application-update-input {
+            width: 100px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        #edit-job-container {
+            display: flex;
+        }
+
+        thead {
+            background-color: #000000; /* Example: Green */
+            color: #FFFFFF; /* Optional: Change text color */
+        }
+
+        tbody {
+            background-color: #f0f0f0; /* Example: Light gray */
+        }
+
+        
+
+        #edit-job-form {
+            flex: 3; /* Adjust relative widths */
+            background: #5555ff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 450px;
+        }
+
+        #edit-application-updates-table {
+            flex: 2;
+            height:auto;
+            background-color: #999999;
+        }
+
+    #edit-job-updates-container{
+        display:flex;
+        flex-direction: column;
+        
+        margin-left: 20px;
+        
+        min-width: 500px;
+        max-width: 500px;
+        background-color:aqua;
+        display:block;
+        
+    }
+    .top-container {
+        background-color: #999999;
+        
+        height:370px;
+        overflow-y: auto;
+    }    
+    th {
+        user-select: none;
+        position: sticky;
+        top: 0;
+        background: black; /* Ensures header is visible */
+    }
+    
+    .bottom-container {
+        background-color: #f0f0f0;
+        padding:10px;
+        
+        text-align: center;
+    }
+    .bottom-container form {
+    display: flex;
+    align-items: center; /* Aligns inputs vertically */
+    gap: 10px; /* Adds spacing between elements */
+    }
+
+    #jobs-table-status-chead {
+        transition: background-color 0.3s ease-in-out; /* Smooth effect */
+    }
+
+    #jobs-table-status-chead:hover{
+        background-color: rgb(31, 155, 196);
+    }
+
+    .sortable-chead{
+        transition: background-color 0.3s ease-in-out; /* Smooth effect */
+    }
+
+    .sortable-chead:hover{
+        background-color: lightslategray;
+    }
+
+    </style>
+</head>
+<nav>
+    <a onclick="showPage('dashboard');renderDashboard()">Dashboard</a>
+    <a onclick="showPage('applications')">Applications</a>
+    <body>
+        <a onclick="showPage('import-export')">Import/Export</a>
+        <a onclick="showPage('how-to-use')">How to Use</a>
+        <a onclick="showPage('contact')">Contact</a>
+    </nav>
+    <div class="content">
+        <div id="admin-panel" class="page">
+            <button onclick="indexedDB.deleteDatabase(dbName);">nuke the db</button>
+        </div>
+        <div id="dashboard" class="page">
+            <div class="dashboard-container">
+                <div id="total-applications">
+                </div>
+                <div id="active-applications">bb
+                </div>
+                <div id="advancing-applications">cc
+                </div>
+                <input type="checkbox" id="hide-zeros-dashboard" checked>Hide 0's
+                <table id="dashboard-table-2" style="width:300px">
+                    <colgroup>
+                        <col style="width:250px">
+                        <col style="width:100px">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboard-table-2-tbody">
+                        <th>...</th>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="applications" class="page active">
+            <dialog id="add-job-dialog" style="padding:5px;background-color: #dddddd;">
+                <div style="text-align: right;"><span  class="small-btn" onclick="document.getElementById('add-job-dialog').close()">⨉</span></div>
+                <form id="job-form">
+                    <label for="company">Company:</label>
+                        <input type="text" class="job-details-input" id="company" placeholder="Company" required>
+                    <br>
+                    <label for="job-title"> Job Title:</label>
+                        <input type="text" class="job-details-input" id="job-title" placeholder="Job Title" required>
+                    <br>
+                    <label for="location">Location:</label>
+                        <input type="text" class="job-details-input" id="location" placeholder="Location">
+                    <br>
+                    <label for="url">URL for job postion (optional):</label>
+                        <input type="url" class="job-details-input" id="url" placeholder="Job URL">
+                    <br>
+                    <label for="date">Date of application:</label>
+                        <input type="date" class="job-details-input" id="date" required>
+                    <br>
+                    <div style="display:flex;gap:20px;">
+                        <button class="submit" type="submit">Add Job Application</button>
+                        <button type="button" formnovalidate style = "background-color: red;width:50%;" onclick="document.getElementById('add-job-dialog').close()">Close</button>
+                    </div>
+                </form>
+            </dialog>
+            <div id="form-container">
+                <button style="width: 150px; margin-top: 0px;background-color: #009000;" onclick="document.getElementById('add-job-dialog').showModal()">Add manually</button>
+                OR
+                <form id="fetch-form">
+                    <input type="url" id="fetch-url" placeholder="Paste URL here..." style="padding: 5px">
+                    <span id="fetch-status-bar"></span>
+                </form>
+            </div>
+            
+            <form id="search-form">
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="applications-search-bar" placeholder="Search by company, job title or location...">
+                </div>
+            </form>
+    
+            <table id="jobs-table" style="table-layout: fixed; width: 100%;">
+                <thead>
+                    <tr>
+                        <th class="sortable-chead">Company</th>
+                        <th class="sortable-chead">Job Title</th>
+                        <th class="sortable-chead">Location</th>
+                        <th>URL</th>
+                        <th class="sortable-chead">Date</th>
+                        <th id="jobs-table-status-chead">Status</th>
+                        <th>⚙️</th>
+                        <th>🗑️</th>
+                    </tr>
+                </thead>
+                <tbody id="jobs-table-tbody">
+                    <colgroup>
+                        <col>
+                        <col>
+                        <col>
+                        <col style="width: 50px;">
+                        <col style="width: 100px;">
+                        <col style="width: 150px;">
+                        <col style="text-align:right; width: 40px;">
+                        <col style="text-align: center; width: 40px;">
+                    </colgroup>
+                </tbody>
+            </table>
+            <br>
+            
+            <div id="display-jobs-hint">
+            </div>
+                
+            <button style="all:revert" id="fake-data-generator" onclick="generateFakeDate()">generate fake data</button>
+            <button style="all:revert" id="reset-filters-button" onclick="resetFilters()">reset filters</button>
+            
+        </div>
+        <div id="import-export" class="page">
+            <div>
+                <label for="fileInput" id="import-data-label">Import JSON Data</label>
+                <input style="display:none;" type="file" id="fileInput" accept=".json">
+                <button onclick="export_data()">Export Data to JSON</button>
+            </div>
+    
+
+        </div>
+        <div id ="add-job" class="page">
+            <h2>Job Applications Tracker</h2>
+            
+        </div>
+        <div id ="edit-job" class="page">
+            <h2>Job Applications Tracker</h2>
+            <div id="edit-job-container">
+                <div id="edit-job-form-container">
+                    <form id="edit-job-form">
+                        <input type="number" class="job-details-input" id="edit-job-id" value="-1" readonly>
+                        <label for="company">Company:</label>
+                        <input type="text" class="job-details-input" id="edit-company" placeholder="You were not supposed to see this..." required>
+                        <br>
+                        <label for="job-title"> Job Title:</label>
+                        <input type="text" class="job-details-input" id="edit-job-title" placeholder="You were not supposed to see this..." required>
+                        <br>
+                        <label for="location">Location:</label>
+                        <input type="text" class="job-details-input" id="edit-location" placeholder="You were not supposed to see this...">
+                        <br>
+                        <label for="url">URL for job postion (optional):</label>
+                        <input type="url" class="job-details-input" id="edit-url" placeholder="(there is no URL for this job)">
+                        <br>
+                        <label for="date">Date of application:</label>
+                        <input type="date" id="edit-date" required>
+                        <br>
+                        <div style="display:flex;gap:20px;">
+                            <button class="submit" type="submit">Apply Changes</button>
+                            <button type="button" style="background-color: #aaaa00;width:50%;" onclick="showPage('applications')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="edit-job-updates-container">
+                    <div class="top-container">
+                        <table id="edit-application-updates-table">
+                            <colgroup>
+                                <col style="width: 150px;">
+                                <col style="width: 200px;">
+                                <col style="width: 110px;">
+                                <col style="width: 40px;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Notes</th>
+                                    <th>Date</th>
+                                    <th>-</th>
+                                </tr>
+                            </thead>
+                            <tbody id="edit-application-updates-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bottom-container">
+                        <form id="insert-job-update-form">
+                            <select id="insert-job-update-type" name="job-update-type" style="width:100px;padding:5px;margin-top:0px">
+                            </select>
+                            <input type="text" id="application-update-notes" style="width:200px;padding:5px;margin-top:0px" placeholder="Notes(optional)">
+                            <input type="date" id="application-update-date" style="width:100px;padding:5px;margin-top:0px" required>
+                            <button id="add-application-update-button" style="width:50px;padding:5px;margin-top:0px;background-color: #005000;">+</button>
+                        </form>
+                    </div>
+                </div>
+                <br>
+            </div>
+            
+        </div>
+
+        <div id="how-to-use" class = "page">
+            All the data is stored locally in your browser, so no need to log in
+            <br><br>
+            <b>Dashboard:</b> Here you can look at number of your applications
+            <br><br>
+            <b>Applications:</b> You can fill job applications either manually, or just paste URL for automatic data fetch.
+            <br>⚙️ edits the application details and allows to insert updates
+            <br>🗑️ deletes the application
+            <br>The table can be sorted by: <b>Company</b>, <b>Job Title</b>, <b>Location</b> and <b>Date</b>. Click the header to sort.
+            <br>Click on "Status" header to filter the applications:
+            <div style="width: 200px; background-color: #000000; color:#ffffff">All applications</div>
+            <div style="width: 200px; background-color: #a0a000; color:#ffffff">Active applications</div>
+            <div style="width: 200px; background-color: #005000; color:#ffffff">Advancing applications</div>
+            <br><b>Import/export: </b>Here you can import or export your stored data in JSON format.
+            <br>
+            <br>Job boards supported so far for auto-fetch:
+            <ul>
+                <li>LinkedIn</li>
+                <li>GreenHouse.io</li>
+            </ul>
+
+        </div>
+
+        <div id="contact" class = "page">
+            Bugs reports, comments and wishes: ixdon92@gmail.com
+            <br><br>
+            <a href="https://www.linkedin.com/in/vladimir-medvedev-b135ab262/">LinkedIn</a>
+            <br><br>
+            <a href="https://t.me/ixdon">Telegram: @ixdon</a>
+        </div>
+    </div>
+
+    <script>
+
+        const days_ghosted = 30;
+
+        const application_update_options = {
+            "Pending":"#cccccc",
+            "Ghosted":"#777777",
+            "Rejection":"#ff9999",
+            "Request for more details":"#9999ff",
+            "Follow-up":"#99ffff",
+            "Interview invitation":"#99ff99",
+            "Interview schedlued":"#ff00ff",
+            "Withdraw":"#ffff00",
+            "Job Offer":"#00ff00"
+        }
+
+        const application_update_invalid = ['Pending','Ghosted']
+
+        const application_status_filter_options = [ // modes of filter by status (values to exclude)
+            ['Rejection','Ghosted','Withdraw'],
+            ['Rejection','Ghosted','Withdraw','Pending'],
+            [],
+        ]
+
+        const application_status_background = [
+            "#a0a000",
+            "#005000",
+            ""
+        ]
+        var status_filtering_mode = 2;
+        const checkbox = document.getElementById("hide-zeros-dashboard");
+        checkbox.addEventListener('change', function() {renderDashboard()});
+
+        function showPage(pageId) {
+            const pages = document.querySelectorAll(".page");
+            //console.log(pages)
+            pages.forEach(page => page.classList.remove("active")); // Hide all pages
+            document.getElementById(pageId).classList.add("active"); // Show selected page
+        }
+
+	    document.getElementById("date").valueAsDate = new Date();
+        document.getElementById("application-update-date").valueAsDate = new Date();
+
+        
+        
+        const dbName = "JobApplicationsDB";
+        const storeName = "jobs";
+
+        let db;
+        const request = indexedDB.open(dbName, 1);
+
+        request.onupgradeneeded = event => {
+            db = event.target.result;
+            db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+        };
+
+        request.onsuccess = event => {
+            db = event.target.result;
+            displayJobs();
+        };
+
+        request.onerror = event => console.error("IndexedDB error:", event.target.error);
+
+        //document.getElementById("hide-zeros-dashboard").addEventListener("change",renderDashboard())
+
+        document.getElementById("job-form").addEventListener("submit", event => {
+            event.preventDefault();
+            let job = {
+                company: document.getElementById("company").value,
+                title: document.getElementById("job-title").value,
+                location: document.getElementById("location").value,
+                url: document.getElementById("url").value,
+                date: document.getElementById("date").value,
+                events:[]
+            };
+            addJob(job);
+            console.log(job)
+            document.getElementById('add-job-dialog').close()
+            job = null;
+        });
+        
+        document.getElementById("edit-job-form").addEventListener("submit", event => {
+            event.preventDefault(); // Stops the form from reloading the page
+            editJobUpdate();
+        });
+
+        document.getElementById("insert-job-update-form").addEventListener("submit",event => {
+            event.preventDefault();
+            const job_id = Number(document.getElementById("edit-job-id").value)
+            const job_update = {
+                type: document.getElementById("insert-job-update-type").value,
+                notes: document.getElementById("application-update-notes").value,
+                /*date: document.getElementById("date").value*/
+                date: document.getElementById("application-update-date").value
+            }
+            console.log(job_update)
+            jobUpdatePush(job_id,new_update=job_update,remove_index=null,mode="add")
+        });
+
+	    document.getElementById("fetch-url").addEventListener("paste", function(event) {
+	    setTimeout(() => {
+            fetch_job(event.target.value)
+	        event.target.value = ""; // Clear the input field after showing the alert
+	    }, 0);
+	    });
+
+        document.getElementById("applications-search-bar").addEventListener("input", event => {
+            displayJobs(); // Calls the function when text changes
+        });
+
+        document.getElementById("search-form").addEventListener("submit", event => {
+            event.preventDefault(); // Prevents page reload
+        }); 
+        const statusBar = document.getElementById("status-bar");
+        const searchBar = document.getElementById("applications-search-bar")
+
+        document.getElementById("insert-job-update-type").innerHTML=``
+        options_list = Object.keys(application_update_options)
+        
+        options_list.forEach(option => {
+            
+            if(!application_update_invalid.includes(option)){
+            document.getElementById("insert-job-update-type").innerHTML+=`
+                    <option value="${option}" style="background:${application_update_options[option]}">${option}</option>>
+            `}
+        })
+
+        document.getElementById("jobs-table-status-chead").addEventListener("click", event => {
+            status_filtering_mode = (status_filtering_mode + 1) % application_status_filter_options.length
+            new_background_color = application_status_background[status_filtering_mode]
+            document.getElementById("jobs-table-status-chead").style.backgroundColor = new_background_color
+
+            const styleSheet = document.styleSheets[0]; // Get the first stylesheet
+            styleSheet.insertRule("#jobs-table-status-chead hover { background-color: rgb(100, 200, 100); }", styleSheet.cssRules.length);
+            
+            displayJobs();
+        })
+
+        let column_sorted_by = 0;
+        let jobs_displayed = 0;
+        document.querySelectorAll(".sortable-chead").forEach(element => {
+            element.addEventListener("click", event => {
+                let columnIndex = event.target.cellIndex;
+                
+                if(last_column_clicked){ //removing last "character" from the column where we added it last time
+                    last_column_clicked.textContent = last_column_clicked.textContent.slice(0,-1)
+                }
+                if(column_sorted_by === (columnIndex+1)){ //if asc already, do desc
+                    column_sorted_by = -column_sorted_by
+                    event.target.textContent += "↑"
+                    
+                    last_column_clicked = event.target
+                } else if (column_sorted_by === -(columnIndex+1)) {//if desc, remove sorting
+                    column_sorted_by = 0
+                    last_column_clicked = null
+                } else{ //sorting ascending
+                    column_sorted_by = (columnIndex+1)
+                    event.target.textContent += "↓"
+                    
+                    last_column_clicked = event.target
+                }
+            displayJobs()    
+            });
+        });
+
+        
+        let last_column_clicked;
+
+        function renderDashboard(){
+            
+            const transaction = db.transaction(storeName, "readonly");
+            const store = transaction.objectStore(storeName);
+            const request = store.getAll();
+
+            request.onsuccess = () => {
+                //const checkbox = document.getElementById("hide-zeros-dashboard");
+                const jobs = request.result;
+                jobs.forEach(job => {
+                    s = job.status; 
+                })
+                application_type_array = [0,0,0];
+                const status_counter = Object.keys(application_update_options).reduce((acc, key) => {
+                    acc[key] = 0;
+                    return acc;
+                }, {});
+                tbody = document.getElementById('dashboard-table-2-tbody')
+                tbody.innerHTML = ``;
+                var dashboard_display_numbers = new Array(application_status_filter_options.length).fill(0)
+                    //todo: count applications by type
+                jobs.forEach(job => {
+                    s = calculateApplicationStatus(job,false);
+                    status_counter[s] += 1;
+                    for(i=0;i<application_status_filter_options.length;i++){
+                        if(!(application_status_filter_options[i].includes(s))){application_type_array[i]+=1}
+                    }
+                })
+                //console.log(application_type_array)
+                document.getElementById("active-applications").textContent = "Active applications: "+application_type_array[0];
+                document.getElementById("advancing-applications").textContent = "Advancing applications: "+application_type_array[1];
+                document.getElementById("total-applications").textContent = "Total applications: "+application_type_array[2];
+                Object.keys(status_counter).forEach(key => {
+                    new_row = tbody.insertRow();
+                    new_row.innerHTML = `<td>${key}</td><td>${status_counter[key]}</td>`
+                    new_row.style.backgroundColor = application_update_options[key];
+                    new_row.style.color = "#000000"
+                    if((checkbox.checked) & (status_counter[key] === 0)){new_row.style.display = 'none'}
+
+                })
+                
+
+            }
+            
+            
+
+        }
+
+        function addJob(job) {
+            const transaction = db.transaction(storeName, "readwrite");
+            const store = transaction.objectStore(storeName);
+            store.add(job);
+            transaction.oncomplete = () => {
+                    showPage("applications");
+                    delete job;
+                    displayJobs();
+                    };
+        }
+
+        function displayJobs(index_start=0,N=20) {
+            
+            const transaction = db.transaction(storeName, "readonly");
+            const store = transaction.objectStore(storeName);
+            const request = store.getAll();
+
+            
+
+            request.onsuccess = () => {
+                const jobs = request.result;
+                if((index_start < 0) | (index_start > jobs.length)){console.log('negative start index???');return null} //guardrail 1
+                if((index_start + N) > jobs.length){N = (jobs.length-index_start);} //guardrail 2
+
+                const tbody = document.querySelector("#jobs-table tbody");
+                if(index_start === 0){tbody.innerHTML = "";}
+                jobs_displayed = N+index_start;
+                if(jobs.length === 0){
+                    //console.log('?')
+                    document.getElementById("display-jobs-hint").innerHTML = `
+                    No job applications to display.<br> 
+                    You can start by 
+                    <ul>
+                        <li>adding a job application manually with big green button avove the table</li>
+                        <li>pasting a URL to a job posting into "Paste URL here..." textbox<br>
+                            for example, this: 
+                            <input type="text" style="width:300px" value="https://www.linkedin.com/jobs/view/4228041653/" readonly onclick="this.select()">
+                            </li>
+                        <li>or by pressing a button below to generate fake data to play with:</li>
+                    </ul>`
+                    document.getElementById("fake-data-generator").style.display = "block";
+                    document.getElementById("reset-filters-button").style.display = "none";
+                    return null;
+                } else if(jobs_displayed === 0){
+                    document.getElementById("display-jobs-hint").textContent = "No jobs fit search criteria..."
+                    document.getElementById("fake-data-generator").style.display = "none";
+                    document.getElementById("reset-filters-button").style.display = "block";
+                    return null;
+                } else{
+                    document.getElementById("display-jobs-hint").textContent = ""
+                    document.getElementById("fake-data-generator").style.display = "none";
+                    document.getElementById("reset-filters-button").style.display = "none";
+                    
+                }
+                
+                //sort the table
+                if(column_sorted_by!=0){
+                    const ascend = (column_sorted_by>0)
+                    const colname = Object.keys(job_sample)[Math.abs(column_sorted_by)-1]
+                    //console.log(ascend,colname)
+                    jobs.sort(((a,b) => (ascend ? 1 : -1) ^ a[colname].localeCompare(b[colname])))
+                }
+                //console.log(status_counter)
+                jobs.slice(index_start, index_start+N).forEach(job => {
+                    if(
+                        (searchBar.value==='') || 
+                        (job.company.toLowerCase().includes(searchBar.value.toLowerCase())) || 
+                        (job.title.toLowerCase().includes(searchBar.value.toLowerCase())) ||
+                        (job.location.toLowerCase().includes(searchBar.value.toLowerCase()))){
+
+                        const job_status = calculateApplicationStatus(job,false)
+                        
+                        
+                        const hide_flag = application_status_filter_options[status_filtering_mode].includes(job_status)
+                        if(!hide_flag){
+                            const row = tbody.insertRow();
+                            row_background_color = application_update_options[calculateApplicationStatus(job,false)]
+                            row.innerHTML = `
+                                <td>${job.company}</td>
+                                <td>${job.title}</td>
+                                <td>${job.location}</td>
+                                <td>${job.url ? `<a href="${job.url}" target="_blank">Link</a>` : '(no link)'}</td>
+                                <td>${job.date}</td>
+                                <td>${calculateApplicationStatus(job,days_ago_flag=true)}</td>
+                                <td><span class="small-btn" onclick="editJobStart(${job.id})">⚙️</span></td>
+                                <td><span class="small-btn" onclick="deleteJob(${job.id})">🗑️</span></td>
+                            `;
+                            row.style.backgroundColor = row_background_color
+                        }
+                    }
+                        
+                });
+
+                
+                //console.log(status_counter)
+                const tbody_2 = document.getElementById("dashboard-table-2-tbody")
+                tbody_2.innerHTML = ``            
+            };
+        }
+
+        window.addEventListener("scroll", function () {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {displayJobs(jobs_displayed);}
+        });
+
+
+        function editJobStart(id){
+            showPage("edit-job")
+            document.getElementById("edit-job-id").value = id
+            document.getElementById("application-update-date").valueAsDate = new Date()
+            const transaction = db.transaction(storeName, "readwrite");
+	        const store = transaction.objectStore(storeName);
+	        const request = store.get(id);
+	        request.onsuccess = () => {
+        	    const job = request.result;
+                document.getElementById("edit-company").value = job.company
+                document.getElementById("edit-job-title").value = job.title
+                document.getElementById("edit-location").value = job.location
+                document.getElementById("edit-url").value = job.url
+                document.getElementById("edit-date").valueAsDate = new Date(job.date)
+                renderJobUpdates(job);
+                
+        }
+    }
+
+        function renderJobUpdates(job){
+            const tbody = document.querySelector("#edit-application-updates-tbody");
+                tbody.innerHTML = "";
+                const first_row = tbody.insertRow();
+                first_row.innerHTML = `
+                                <td>Application Sent</td>
+                                <td></td>
+                                <td>${job.date}</td>
+                                <td></td>
+                                `
+                first_row.style.backgroundColor = "lightblue"
+                if(!job.hasOwnProperty("updates")){
+                    job.updates = []
+                }
+                job_update_counter = 0;
+                job.updates.forEach(application_update => {
+                    new_row = tbody.insertRow();
+                    new_row.innerHTML = `
+                        <td>${application_update.type}</td>
+                        <td>${application_update.notes}</td>
+                        <td>${application_update.date}</td>
+                        <td><span class="small-btn" onclick="jobUpdatePush(job_id=${job.id},new_update=null,remove_index=${job_update_counter},mode='remove')">🗑️</span></td>
+                    `
+                    job_update_counter+=1;
+                })
+                
+                
+        }
+
+        function jobUpdatePush(job_id,new_update=null,remove_index=null,mode){
+            const transaction = db.transaction(storeName, "readwrite");
+	        const store = transaction.objectStore(storeName);
+	        const request = store.get(job_id);
+	        request.onsuccess = () => {
+                
+                const job = request.result; 
+                if(job === undefined){
+                    console.log('incorrect job_id')
+                    return -1
+                }
+                if(!job.hasOwnProperty("updates")){
+                    job.updates = []
+                }
+                console.log(mode)
+                switch(mode){
+                    case "add":
+                        job.updates.push(new_update) // adding new application update to array 
+                        break
+                    case "remove":
+                        job.updates.splice(remove_index,1)
+                        break
+                    default:
+                        alert('unknown error')
+                        console.log('unknown edit mode')
+                        console.log(arguments) 
+                }
+                
+                job.updates.sort(((a, b) => a.date.localeCompare(b.date)))
+                store.put(job);
+                transaction.oncomplete = () => {
+                    renderJobUpdates(job)
+                    displayJobs();
+                    };
+	            };
+            }
+
+        function editJobUpdate(){
+            id = Number(document.getElementById("edit-job-id").value)
+            const transaction = db.transaction(storeName, "readwrite");
+	        const store = transaction.objectStore(storeName);
+	        const request = store.get(id);
+            
+	        request.onsuccess = () => {
+                const job = request.result;
+                job.company = document.getElementById("edit-company").value
+                job.title = document.getElementById("edit-job-title").value
+                job.location = document.getElementById("edit-location").value
+                job.url = document.getElementById("edit-url").value
+                job.date = document.getElementById("edit-date").value
+                console.log(job)
+                store.put(job);
+                transaction.oncomplete = () => {
+                    showPage("applications");
+                    displayJobs();
+                    };
+	            };
+        }
+
+        function deleteJob(id) {
+            const transaction = db.transaction(storeName, "readwrite");
+            const store = transaction.objectStore(storeName);
+            store.delete(id);
+            transaction.oncomplete = () => displayJobs();
+        }
+
+
+        function fetch_job(url){
+            if(url.includes('linkedin.com')){
+                website_job_id = -100
+                if(url.includes('https://www.linkedin.com/jobs/view/')){
+                    console.log('direct link')
+                    website_job_id = url.split("/").slice(-2, -1)[0];                    
+                } else if (url.includes('currentJobId')){
+                    console.log('indirect link')
+                    const params = new URLSearchParams(new URL(url).search);
+                    website_job_id = params.get("currentJobId");
+                } else {
+                    alert('error fetching data')
+                    website_job_id = -1
+                }
+
+                if(website_job_id!=-1){
+                    console.log(website_job_id)
+                    const job_url = 'https://www.linkedin.com/jobs/view/' + website_job_id + '/'
+                    const cors_url = 'https://api.cors.lol/?url=' + encodeURIComponent(job_url)
+                    console.log('to fetch:'+cors_url)
+                    updateStatus('Fetching job details from LinkedIn, please wait...')
+                    fetch(cors_url)
+                        .then(response => response.text())  // Get raw HTML
+                        //.then(data => console.log(data)) // Handle the JSON data
+                        .then(html => {
+                            //statusBar.textContent = 'Please wait...'
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, "text/html");
+                            const webpage_title = doc.title
+                            console.log(webpage_title)
+                            const regex = /^(.*?) hiring (.*?) in (.*?) \| LinkedIn$/;
+                            const match = webpage_title.match(regex);
+                            if (match) {
+                                linkedin_job = {
+                                    company: match[1].trim(),
+                                    title: match[2].trim(),
+                                    location: match[3].trim(),
+                                    url: job_url,
+                                    date: document.getElementById("date").value,
+                                    status:"Sent"
+                                };
+                                addJob(linkedin_job)
+                                linkedin_job = null;
+                                updateStatus('Done!',color='#00FF00')
+                                console.log(linkedin_job)
+                            }
+                        })
+                        .catch(error => {
+                            updateStatus('Error occurred, try again later',color='#FF0000')
+                            console.log('Error occurred, try again later')
+                            console.error("Error:", error)
+                            }
+                        ); // Catch errors
+                    
+                }
+            }else if (url.includes('greenhouse.io')){
+                //alert('greenhouse')
+                const cors_url = 'https://api.cors.lol/?url=' + encodeURIComponent(url)
+                updateStatus('Fetching job details from GreenHouse.io, please wait...')
+                fetch(cors_url)
+                    .then(response => response.text())  // Get raw HTML
+                    //.then(data => console.log(data)) // Handle the JSON data
+                    .then(html => {
+                        //statusBar.textContent = 'Please wait...'
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, "text/html");
+                        const webpage_title = doc.title
+                        
+                        //fetching job title and company for page title
+                        const regex = /Job Application for (.+?) at (.+)/;
+                        const match = webpage_title.match(regex);
+                        const metaTag = doc.querySelector('meta[property="og:description"]');
+                        const location = metaTag ? metaTag.getAttribute("content").trim() : null;
+                        if (match) {
+                            greenhouse_job = {
+                                company:match[2],
+                                title:match[1],
+                                location:location,
+                                url: url,
+                                date: document.getElementById("date").value,
+                                status:"Sent"
+                                }
+                            
+                            addJob(greenhouse_job);
+                            greenhouse_job = null;  
+                            updateStatus('Done!',color='#00FF00')
+                            
+                            //console.log("YYY:", greenhouse_company);
+                            //console.log(location)
+                            }
+                        }
+                    
+                        )
+                        .catch(error => {
+                            updateStatus('Error occurred, try again later',color='#FF0000')
+                            console.log('Error occurred, try again later')
+                            console.error("Error:", error)
+                            }
+                        ); // Catch errors
+            }
+            else {
+                alert('unsupported website');
+            }
+        }
+
+        function calculateApplicationStatus(job,days_ago_flag=false){
+            
+            const magic_number = 86400000; // number of seconds in a day
+            const today = new Date();
+            today.setHours(3, 0, 0, 0);
+            const date_sent = new Date(job.date);
+            const updates = job.updates;
+            if(!job.hasOwnProperty("updates")){
+                status = "Pending"
+                days_ago = (today-date_sent)/magic_number;
+            } else if(updates.length == 0){ // this thing formally violates DRY principle, but it's necessary
+                status = "Pending"
+                days_ago = (today-date_sent)/magic_number;
+            } else {
+                const last_update = updates.at(-1)
+                
+                status = last_update.type
+                days_ago = (today - new Date(last_update.date))/magic_number
+            }
+            if((status==="Pending") & (days_ago > days_ghosted) & (days_ghosted>0)){
+                            status = "Ghosted"
+                        }
+                        
+            if(days_ago_flag){
+                switch(days_ago){
+                    case 0:
+                        status = status + ' (today)'
+                        break
+                    case 1:
+                        status = status + ' (yesterday)'
+                        break
+                    default:
+                        
+                        status = status + ' (' + days_ago + ' days ago)'
+
+
+                }
+                
+            }
+            return status
+            
+        }
+        
+
+        function html_parser(html,platform){
+            console.log('html parser')
+        }
+
+        function updateStatus(message, color = "#555") {
+            const statusBar = document.getElementById("fetch-status-bar");
+            statusBar.textContent = message;
+            statusBar.style.color = color; // Change color based on status
+        }
+
+        function resetFilters(){
+            searchBar.value = ""
+            displayJobs()
+            console.log(searchBar)
+        }
+
+        function generateFakeDate_admin(N=30){
+            for(i=1;i<=N;i++){
+                fake_job={
+                    company:`${i}`,
+                    title:randomString(),
+                    location:`${N-i}`,
+                    
+                    url: null,
+                    date: 'fake date',
+                    updates:[]
+                }
+                addJob(fake_job)
+            }
+        }
+
+        function randomString(length = 8) {
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let result = "";
+            for (let i = 0; i < length; i++) {
+                result += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return result;
+        }
+
+        function generateFakeDate(){
+            const today = new Date();
+            today.setHours(3, 0, 0, 0);
+            fake_jobs=[{
+                company:"The Imperial Armed Forces",
+                title:"Stormtrooper",
+                location:"Coruscant (Senate District, Imperial Center)",
+                url: "https://www.starwars.com/",
+                date: "1970-01-01",
+                updates:[]
+            },
+            {
+                company:"Atlantis Deep-Sea Solutions",
+                title:"Mermaid Translator",
+                location:"Pacific Ocean, Underwater",
+                url: null,
+                date: "2011-07-01",
+                updates:[{
+                    type:"Rejection",
+                    notes:"oops",
+                    date:"2019-05-11"
+                }]
+            },
+            {
+                company:"Mythical Creature Inc.",
+                title:"Unicorn Groomer",
+                location:"Enchanted Forest, Fantasy Realm",
+                url: null,
+                date: "2020-08-01",
+                updates:[{
+                    type:"Interview invitation",
+                    notes:"",
+                    date:"2021-06-17"
+                },
+                {
+                    type:"Interview scheduled",
+                    notes:"",
+                    date:"2021-06-25"
+                },
+            {
+                    type:"Job Offer",
+                    notes:"finally!",
+                    date:"2024-12-03"
+                }]
+            },
+            {
+                company:"Interdimensional Parcel Service",
+                title:"Time-Traveling Delivery",
+                location:"Everywhere & Nowhere (Multiverse Hub)",
+                url: "https://www.wirelesstheatrecompany.co.uk/podcast/time-travel-incorporated",
+                date: document.getElementById("date").value,
+                updates:[]
+            }]
+            fake_jobs.forEach(job => addJob(job))
+        }
+
+        const job_sample = {
+                company:"some company",
+                title:"some job title",
+                location:"somewhere",
+                url: null,
+                date: "1900-01-01",
+                updates:[]
+            }
+
+        document.getElementById("fileInput").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const jsonData = JSON.parse(e.target.result);
+                jsonData.forEach(json => addJob(json));
+            };
+            reader.readAsText(file); // Start reading the file
+            
+        });
+
+        function export_data(){
+            const transaction = db.transaction(storeName, "readonly");
+            const store = transaction.objectStore(storeName);
+            const request = store.getAll();
+            request.onsuccess = () => {
+                jobs = request.result;
+                jobs.forEach(job => {delete job.id})
+                jsonData = JSON.stringify(jobs,null,2);
+                const blob = new Blob([jsonData], { type: "application/json" });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = "applications_tracker_exported_data.json";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+
+    }
+    </script>
+</body>
+</html>
